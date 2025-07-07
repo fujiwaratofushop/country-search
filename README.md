@@ -6,6 +6,60 @@
 
 >Setup Guide
 
+1. Clone the Repository
+bash
+Copy
+Edit
+git clone https://github.com/your-username/country-search.git
+cd country-search
+2. Install Dependencies
+Using npm:
+
+bash
+Copy
+Edit
+npm install
+Or using Yarn:
+
+bash
+Copy
+Edit
+yarn install
+3. Start MongoDB Locally
+Ensure MongoDB is running on your system. If installed locally, you can start it using:
+
+bash
+Copy
+Edit
+mongod
+By default, it connects to mongodb://localhost:27017.
+
+4. Verify .env.local
+Your environment variables should already be set as:
+
+env
+Copy
+Edit
+MONGODB_URI=mongodb://localhost:27017
+MONGODB_DBNAME=mongodb
+✅ No need to modify if .env.local is already present in the project.
+
+5. Seed the Database
+Populate the database with country data:
+
+bash
+Copy
+Edit
+npm run seed
+This command connects to the local MongoDB instance and inserts necessary data.
+
+6. Start the Development Server
+bash
+Copy
+Edit
+npm run dev
+Then open http://localhost:3000 in your browser.
+
 >Self Evaluation
 
 1. 🧱 Architecture & Component Design
