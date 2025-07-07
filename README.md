@@ -8,61 +8,74 @@
 
 >Self Evaluation
 
-1. Design and Architecture
-In building this app, I focused on creating reusable and modular components. The search bar, dropdown, suggestive input, and result list are all broken down into focused, decoupled units, making them easy to maintain and reuse elsewhere. I abstracted out logic-heavy parts into custom hooks — like useCountrySuggestions and useCountryResults — so the components can remain clean and focused purely on UI.
+1. 🧱 Architecture & Component Design
+From the beginning, I aimed for a modular, scalable, and maintainable structure. The components are separated into:
 
-To support maintainability and extensibility, I tried to follow a separation of concerns principle:
+common/: Shared, reusable UI components like Card, Grid, SearchBar, SortBy, SuggestiveInput, etc. These are generic and decoupled from domain-specific logic.
 
-Presentation logic (UI rendering) is handled inside React components.
+semantic/: Context-specific components like CountryDetails, CountrySearchCard, NoCountryResults, which reflect the meaning and behavior of the domain.
 
-Business logic (like search debouncing, pagination, and interaction handling) is moved to hooks.
+I also used custom hooks to isolate logic-heavy operations:
 
-Data logic (fetching, transforming, error handling) is scoped within the backend API route and inside custom hooks.
+useCountrySuggestions – handles user input and debounce behavior.
 
-I didn’t follow a rigid design pattern like MVC or MVVM, but the approach is still quite structured and modular. Constants like continent names, reusable enums, and types are abstracted into dedicated files. This makes it easier to swap in other data sources or fields in the future.
+useCountryResults – handles fetching paginated search results based on URL params.
 
-2. Handling Edge Cases
-I was conscious about handling different types of edge cases to make the app robust and user-friendly:
+useCountryDetails – handles data fetching and toggling between remote/local data sources.
 
-For empty or invalid queries, the search input does not fire API requests unless there’s a meaningful input. It also handles "no results found" scenarios with a fallback message.
+This separation of concerns allows for clean, testable code and easier future extension.
 
-If the API throws an error or data is malformed/missing (e.g., a country is missing a flag or name), the components degrade gracefully. I use conditional rendering and optional chaining to avoid crashes.
+2. 🔁 Dynamic Data Source Support
+One of the more flexible parts of the app is the CountryDetails page, which can toggle between pulling data from the REST Countries API or my local MongoDB-backed API. This is abstracted through a custom hook (useCountryDetails) that:
 
-I’ve built the UI to be resilient even if certain fields are absent in the response. This includes fallback UI text, defensive checks, and skeleton states if needed.
+Accepts a flag or config to determine the data source.
 
-What I can improve is adding more visible error feedback to the user — for example, toast notifications or alerts when a network request fails.
+Fetches data accordingly and normalizes the response.
 
-3. Optimization and Performance
-I implemented debounced API calls using useEffect and setTimeout (or a utility debounce function) to avoid excessive calls when users are typing. This improves performance and reduces load on the server.
+Returns consistent output with loading/error states.
 
-In terms of payload size, I’ve made sure the frontend only uses what it needs. However, I could still optimize the backend MongoDB queries to only fetch specific fields (like name, code, flag) rather than the entire document.
+To unify both APIs, I defined a shared interface CountryAPIResponse
 
-One area I haven’t deeply implemented yet is caching or prefetching. If this were a production system, I’d likely bring in SWR or React Query to add local caching, background refetching, and prefetching for faster navigation. That’s something I’d prioritize in future iterations.
+This ensures strong typing, consistent rendering, and safer access to optional fields across sources.
 
-4. Code Quality and Maintainability
-Throughout the codebase, I paid close attention to readability and consistent styling:
+3. ⚠️ Handling Edge Cases
+The app gracefully handles:
 
-All components follow consistent structure and naming conventions.
+Empty/invalid search inputs – doesn’t trigger unnecessary requests.
 
-I use TypeScript interfaces (ISearchBar, SortDropdownProps, etc.) to make my code self-documenting and type-safe.
+No results found – displays a fallback message.
 
-TailwindCSS is used in a clean, utility-first way. I try to avoid excessive nesting or inline styles, which keeps styles declarative and scoped.
+Missing data – uses optional chaining and fallback UI for things like missing coat of arms, TLDs, maps, or currencies.
 
-The project is also organized in a scalable way — hooks go in a hooks folder, components are grouped semantically, and constants/types live in their own modules. I’ve made sure that most pieces of logic can be modified or replaced independently.
+API errors – logged internally without crashing the UI. (Improving user-facing error feedback is on my roadmap.)
 
-Where I see room to improve is surfacing internal errors to the user (e.g., via toasts or banners), and possibly adding more unit tests or snapshot tests for critical UI components.
+4. ⚙️ Performance Optimizations
+Debounced input: The suggestive input is debounced to reduce unnecessary API calls.
 
-5. Technical Breadth
-This project demonstrates my full-stack capabilities:
+Optimized backend payloads: Only the necessary fields are fetched from MongoDB (or will be in future refinements).
 
-Frontend:
-I built the UI using Next.js with React and TypeScript. I’ve used client components when necessary ('use client') and followed modern React patterns (hooks, conditional rendering, composition). The suggestive search input supports keyboard navigation, click-to-select, and dropdown highlighting.
+Pagination & sorting: Supported via query params and exposed in the UI via a SortBy dropdown.
 
-Backend / API Integration:
-I created a custom Next.js API route that queries MongoDB for country data. This route performs fuzzy matching (with regex or full-text search) and supports pagination and sorting based on client query parameters.
+I plan to integrate client-side caching (with SWR or React Query) to further improve responsiveness and reduce load.
 
-Data Transformation:
-I ensure the data is normalized before it hits the frontend. For instance, the API only returns what’s needed (though this could be optimized further), and fields are renamed or shaped properly to suit the UI.
+5. 🧰 Code Quality and Maintainability
+TypeScript-first approach: All components, hooks, and API responses are typed.
 
-MongoDB + Docker:
-I’ve used MongoDB running in Docker for local development. I connected to the database securely, used Mongoose (or native driver, depending on config), and built index-aware queries to keep lookups efficient.
+Consistent naming: Components, props, and files are clearly named for discoverability.
+
+TailwindCSS: Used consistently for utility-first, responsive styling.
+
+Directory structure: Semantic and functional separation is followed (hooks, constants, API, components, types).
+
+6. 🌐 Technical Breadth
+This project demonstrates full-stack capability:
+
+Frontend: Next.js + React, modular components, debounce logic, responsive design.
+
+Backend API: Custom API routes in Next.js to query MongoDB with fuzzy search.
+
+Database: MongoDB running locally via Docker with efficient queries and indexing.
+
+Data abstraction: The ability to switch data sources dynamically and normalize responses.
+
+
