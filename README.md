@@ -8,6 +8,8 @@
 - 📜 Infinite scroll with IntersectionObserver
 - 🔎 Suggestive input with debounce
 
+Please note: Although not mentioned in the assigment, I have taken the luxury of moving the searchbar across all the pages for improved UX.
+
 ## Architecture
 
 ![archoneoak drawio](https://github.com/user-attachments/assets/9b664f94-0276-43ec-bb20-47985904ba9d)
