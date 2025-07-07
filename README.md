@@ -88,6 +88,8 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### 1. 🧱 Architecture & Component Design
 
+The URL acts as the single source of truth for the whole system, making any kind of info sharing between pages as well as users supereasy.
+
 From the beginning, I aimed for a modular, scalable, and maintainable structure. The components are separated into:
 
 - **`common/`**: Shared, reusable UI components like Card, Grid, SearchBar, SortBy, SuggestiveInput, etc. These are generic and decoupled from domain-specific logic.
