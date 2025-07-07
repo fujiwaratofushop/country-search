@@ -18,7 +18,7 @@ export function useCountryResults(searchParams: URLSearchParams) {
   const sort = searchParams.get('sort') || '';
 
   const queryKey = useMemo(
-    () => `${name}-${continent}-${sort}-page-${page}`,
+    () => `results-${name}-${continent}-${sort}-page-${page}`,
     [name, continent, sort, page]
   );
 
@@ -33,6 +33,8 @@ export function useCountryResults(searchParams: URLSearchParams) {
     const res = await fetch(`/api/countries?${params.toString()}`);
     return await res.json();
   };
+
+  console.log('hi', queryKey)
 
   const getCountries = useWithCache(queryKey, fetcher);
 
@@ -54,14 +56,14 @@ export function useCountryResults(searchParams: URLSearchParams) {
     return () => {
       cancelled = true;
     };
-  }, [queryKey]);
+  }, [queryKey, hasMore]);
 
   // Reset on searchParams change (excluding page)
   useEffect(() => {
     setCountries([]);
     setPage(1);
     setHasMore(true);
-  }, [name, continent, sort]);
+  }, [queryKey]);
 
   const observerRef = useInfiniteScrollObserver({
     loading,
