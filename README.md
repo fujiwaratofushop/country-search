@@ -101,6 +101,12 @@ I also used custom hooks to isolate logic-heavy operations:
 - **`useCountryDetails`** – handles data fetching and toggling between remote/local data sources.
 - **`useInfiniteScrollObserver`** – reusable hook to make scrollable containers infinite scroll.
 
+✅ Separation of Concerns:
+
+Data-fetching logic is kept within hooks.
+UI components don’t manage API calls directly.
+Presentation layer is decoupled from data logic and backend APIs.
+
 This separation of concerns allows for clean, testable code and easier future extension.
 
 ### 2. 🔁 Dynamic Data Source Support
