@@ -91,6 +91,7 @@ I also used custom hooks to isolate logic-heavy operations:
 - **`useCountrySuggestions`** – handles user input and debounce behavior.
 - **`useCountryResults`** – handles fetching paginated search results based on URL params.
 - **`useCountryDetails`** – handles data fetching and toggling between remote/local data sources.
+- **`useInfiniteScrollObserver`** – reusable hook to make scrollable containers infinite scroll.
 
 This separation of concerns allows for clean, testable code and easier future extension.
 
