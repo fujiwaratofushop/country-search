@@ -9,7 +9,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/country-search.git
+git clone https://github.com/fujiwaratofushop/country-search.git
 cd country-search
 ```
 
@@ -31,6 +31,18 @@ Ensure MongoDB is running on your system. If installed locally, you can start it
 
 ```bash
 mongod
+```
+
+OR
+
+If using docker:
+
+```bash
+docker run -d \
+  --name country-mongo \
+  -p 27017:27017 \
+  -e MONGO_INITDB_DATABASE=mongodb \
+  mongo
 ```
 
 By default, it connects to `mongodb://localhost:27017`.
