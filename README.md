@@ -2,7 +2,7 @@
 
 ## Architecture
 
-![Architecture Diagram](https://github.com/user-attachments/assets/724fc61a-336e-4fb2-b431-c0da0fa8dde1)
+![archoneoak drawio](https://github.com/user-attachments/assets/9b664f94-0276-43ec-bb20-47985904ba9d)
 
 ## Setup Guide
 
