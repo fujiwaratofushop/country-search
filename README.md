@@ -1,5 +1,13 @@
 # Country Search
 
+## Features
+
+- 🌍 Country search with fuzzy matching
+- 📦 MongoDB-powered backend API
+- 🔁 Toggle between REST API and local DB
+- 📜 Infinite scroll with IntersectionObserver
+- 🔎 Suggestive input with debounce
+
 ## Architecture
 
 ![archoneoak drawio](https://github.com/user-attachments/assets/9b664f94-0276-43ec-bb20-47985904ba9d)
@@ -89,7 +97,7 @@ From the beginning, I aimed for a modular, scalable, and maintainable structure.
 I also used custom hooks to isolate logic-heavy operations:
 
 - **`useCountrySuggestions`** – handles user input and debounce behavior.
-- **`useCountryResults`** – handles fetching paginated search results based on URL params.
+- **`useCountryResults`** – handles fetching paginated search results based on URL params, and supports fuzzy matching via backend API.
 - **`useCountryDetails`** – handles data fetching and toggling between remote/local data sources.
 - **`useInfiniteScrollObserver`** – reusable hook to make scrollable containers infinite scroll.
 
