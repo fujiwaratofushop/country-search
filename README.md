@@ -102,6 +102,7 @@ I also used custom hooks to isolate logic-heavy operations:
 - **`useCountryResults`** – handles fetching paginated search results based on URL params, and supports fuzzy matching via backend API.
 - **`useCountryDetails`** – handles data fetching and toggling between remote/local data sources.
 - **`useInfiniteScrollObserver`** – reusable hook to make scrollable containers infinite scroll.
+- **`useWithCache`** - reusable hook to cache async fetch operations
 
 ✅ Separation of Concerns:
 
@@ -142,10 +143,11 @@ Errors and Loading are wrapped in common reusable components/containers.
 ### 4. ⚙️ Performance Optimizations
 
 - **Debounced input**: The suggestive input is debounced to reduce unnecessary API calls.
-- **Optimized backend payloads**: Only the necessary fields are fetched from MongoDB (or will be in future refinements).
+- **Optimized backend payloads**: Only the necessary fields are fetched from MongoDB.
 - **Pagination & sorting**: Supported via query params and exposed in the UI via a SortBy dropdown.
+- **Caching**: Centralized caching mechanism using a custom hook (useWithCache) that wraps around fetch calls in all data-related hooks. It stores results in a shared in-memory cache using key-based lookups to avoid redundant network requests.
 
-I plan to integrate client-side caching (with SWR or React Query) to further improve responsiveness and reduce load.
+Prefetching can be implemented with SWR.
 
 ### 5. 🧰 Code Quality and Maintainability
 
