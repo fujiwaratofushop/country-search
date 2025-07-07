@@ -26,17 +26,23 @@ useCountryDetails – handles data fetching and toggling between remote/local da
 This separation of concerns allows for clean, testable code and easier future extension.
 
 2. 🔁 Dynamic Data Source Support
-One of the more flexible parts of the app is the CountryDetails page, which can toggle between pulling data from the REST Countries API or my local MongoDB-backed API. This is abstracted through a custom hook (useCountryDetails) that:
+One of the more flexible parts of the app is the CountryDetails page, which can toggle between pulling data from the REST Countries API or my local MongoDB-backed API. This is abstracted through a custom hook, useCountryDetails, that:
 
-Accepts a flag or config to determine the data source.
+Accepts a configurable endpoint (either external or local).
 
-Fetches data accordingly and normalizes the response.
+Optionally accepts a flattening function to shape the data for UI consumption.
 
-Returns consistent output with loading/error states.
+Fetches data accordingly and returns a normalized response.
 
-To unify both APIs, I defined a shared interface CountryAPIResponse
+Provides consistent loading and error states, keeping the component logic clean.
 
-This ensures strong typing, consistent rendering, and safer access to optional fields across sources.
+Instead of relying on a raw shared API response type, I defined a CountryDetailsCardProps interface, which represents the flattened and display-ready version of country details. This ensures:
+
+✅ Strong typing across different data sources
+
+✅ Consistent rendering of the country detail UI
+
+✅ Safer handling of optional or nested fields like maps, coatOfArms, or currencies
 
 3. ⚠️ Handling Edge Cases
 The app gracefully handles:
@@ -48,6 +54,8 @@ No results found – displays a fallback message.
 Missing data – uses optional chaining and fallback UI for things like missing coat of arms, TLDs, maps, or currencies.
 
 API errors – logged internally without crashing the UI. (Improving user-facing error feedback is on my roadmap.)
+
+Errors and Loading are wrapped in common reusable components/containers.
 
 4. ⚙️ Performance Optimizations
 Debounced input: The suggestive input is debounced to reduce unnecessary API calls.
