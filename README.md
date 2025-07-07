@@ -4,7 +4,7 @@
 
 - 🌍 Country search with fuzzy matching
 - 📦 MongoDB-powered backend API
-- 🔁 Toggle between REST API and local DB
+- 🔁 API level centralised cache
 - 📜 Infinite scroll with IntersectionObserver
 - 🔎 Suggestive input with debounce
 
