@@ -103,9 +103,11 @@ I also used custom hooks to isolate logic-heavy operations:
 
 ✅ Separation of Concerns:
 
-Data-fetching logic is kept within hooks.
-UI components don’t manage API calls directly.
-Presentation layer is decoupled from data logic and backend APIs.
+- Data-fetching logic is kept within hooks.
+
+- UI components don’t manage API calls directly.
+
+- Presentation layer is decoupled from data logic and backend APIs.
 
 This separation of concerns allows for clean, testable code and easier future extension.
 
