@@ -10,11 +10,21 @@ export const SuggestiveInput = ({
   onSuggestionClick,
 }: SuggestiveInputProps) => {
   const [focused, setFocused] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setHighlightedIndex(-1)
+  }, [value])
+
+  useEffect((
+    
+  ) => {console.log('123',highlightedIndex)}, [highlightedIndex])
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (!suggestions.length) return;
+    if (!suggestions.length || !focused) {
+      return;
+    };
 
     switch (e.key) {
       case 'ArrowDown':
@@ -68,7 +78,7 @@ export const SuggestiveInput = ({
         value={value}
         onChange={(e) => {
           onChange(e.target.value);
-          setHighlightedIndex(0);
+          setFocused(true)
         }}
         onFocus={() => setFocused(true)}
         onKeyDown={handleKeyDown}

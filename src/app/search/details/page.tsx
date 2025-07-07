@@ -8,11 +8,14 @@ import Loading from '@/components/common/Loading/Loading';
 import { useCountryDetails } from '@/hooks/useCountryDetails';
 import { flattenCountryData } from '@/utils/helpers';
 
+
 export default function CountryDetails() {
   const searchParams = useSearchParams();
   const countryName = searchParams.get('name');
 
-  const { country, loading, error } = useCountryDetails(countryName, flattenCountryData);
+  const endpoint = `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName ?? "")}?fullText=true`;
+
+  const { country, loading, error } = useCountryDetails(endpoint, flattenCountryData);
 
   if (!countryName)
     return (

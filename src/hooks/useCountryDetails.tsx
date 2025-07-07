@@ -1,44 +1,57 @@
-'use client';
-
 import { useEffect, useState } from 'react';
 import { CountryAPIResponse } from '@/app/types/responses/CountryAPIResponse';
+import { CountryDetailsCardProps } from '@/components/semantic/CountryDetails/types';
+import { useWithCache } from '@/hooks/useWithCache';
 
-type FlattenFn<T> = (data: CountryAPIResponse) => T;
-
-export function useCountryDetails<T = CountryAPIResponse>(
-  countryName: string | null,
-  flattenFn?: FlattenFn<T>
+export function useCountryDetails(
+  endpoint: string | null,
+  flattenFn?: (data: any) => CountryDetailsCardProps
 ) {
-  const [country, setCountry] = useState<T | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [country, setCountry] = useState<CountryDetailsCardProps | null>(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const key = endpoint || '';
+
+  const fetcher = async () => {
+    const res = await fetch(endpoint!);
+    const data = await res.json();
+
+    const raw: CountryAPIResponse | null =
+      Array.isArray(data) && data.length > 0 ? data[0] : data ?? null;
+
+    if (!raw) throw new Error('Country not found');
+
+    return flattenFn ? flattenFn(raw) : (raw as unknown as CountryDetailsCardProps);
+  };
+
+  const getCountry = useWithCache<CountryDetailsCardProps>(key, fetcher);
+
   useEffect(() => {
-    if (!countryName) return;
+    if (!endpoint) return;
 
-    const fetchCountry = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch(
-          `https://restcountries.com/v3.1/name/${encodeURIComponent(countryName)}?fullText=true`
-        );
-        const data = await res.json();
+    let cancelled = false;
+    setLoading(true);
+    setError('');
 
-        if (res.ok && data.length > 0) {
-          const raw = data[0];
-          setCountry(flattenFn ? flattenFn(raw) : raw);
-        } else {
-          throw new Error('Country not found');
+    getCountry()
+      .then((data) => {
+        if (!cancelled) setCountry(data);
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          setError(err.message || 'Error fetching country');
+          setCountry(null);
         }
-      } catch (err: any) {
-        setError(err.message || 'Error fetching country');
-      } finally {
-        setLoading(false);
-      }
-    };
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
-    fetchCountry();
-  }, [countryName, flattenFn]);
+    return () => {
+      cancelled = true;
+    };
+  }, [endpoint, flattenFn]);
 
   return { country, loading, error };
 }
